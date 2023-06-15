@@ -1,49 +1,32 @@
 import * as THREE from 'three';
 
 
+console.log(THREE)
 
+//scene is like the container for all the stuff...all the objects like lighting, shapes etc
+const scene = new THREE.Scene()
 
+//red cube 
+const geometry = new THREE.BoxGeometry(1,1,1)
+const material = new THREE.MeshBasicMaterial({color:'#ff0000'})
+//geometry + material = shape or mesh of that shape ??
+const mesh = new THREE.Mesh(geometry,material)
 
-function main() {
-    function render(time){
-        time *=0.001;
-        cube.rotation.x = time 
-        cube.rotation.y = time 
-    
-    
-        renderer.render(scene,camera)
-        requestAnimationFrame(render);
-    }
-    
+//adding stuff to scene
+scene.add(mesh)
 
-    const canvas = document.querySelector("#c");
-    const renderer = new THREE.WebGLRenderer({antialias:true,canvas})
+//adding a camera to view stuff / multiple camera possible but view only from once at a time
+const fov = 75 
+const aspectRatio = 800/600
+const camera = new THREE.PerspectiveCamera(fov,aspectRatio)
+camera.position.z = 3;
+scene.add(camera)
 
-    const fov = 75;
-    const aspect = 2;  // the canvas default
-    const near = 0.1;
-    const far = 5;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+//renderer
+const canvas = document.querySelector("#webgl")
+const renderer = new THREE.WebGLRenderer({
+    canvas:canvas
+})
 
-    camera.position.z = 2 ;
-
-
-    const scene = new THREE.Scene();
-
-    const boxWidth = 1 ;
-    const boxHeight = 1 ;
-    const boxDepth = 1 ;
-
-    
-    const geometry = new THREE.BoxGeometry(boxWidth,boxHeight,boxDepth)
-    const material = new THREE.MeshBasicMaterial({color:0x44aa88});
-
-    const cube = new THREE.Mesh(geometry,material)
-
-    scene.add(cube)
-
-    requestAnimationFrame(render)
-
-}
-
-main()
+renderer.setSize(800,600)
+renderer.render(scene,camera)
